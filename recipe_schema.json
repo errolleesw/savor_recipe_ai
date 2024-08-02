@@ -1,0 +1,236 @@
+{
+  "title": "recipe",
+  "description": "recipe details",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the recipe."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Additional notes for the recipe."
+    },
+    "prepTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "The preparation time in ISO 8601 duration format."
+    },
+    "tags": {
+      "type": ["array", "null"],
+      "description": "Tags associated with the recipe, e.g., appetizer, entree, dessert.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recipeCuisine": {
+      "type": ["string", "null"],
+      "description": "The cuisine of the recipe, e.g., French, Ethiopian.",
+      "enum": [
+        "African",
+        "American",
+        "Australian",
+        "Asian",
+        "British",
+        "Caribbean",
+        "Chinese",
+        "French",
+        "Fusion",
+        "German",
+        "Greek",
+        "Indian",
+        "Italian",
+        "Japanese",
+        "Korean",
+        "Latin American",
+        "Mediterranean",
+        "Mexican",
+        "Middle Eastern",
+        "Nordic",
+        "South American",
+        "Spanish",
+        "Thai",
+        "Turkish",
+        "Vietnamese"
+      ]
+    },
+    "suitableForDiet": {
+      "type": ["string", "null"],
+      "description": "Indicates a dietary restriction or guideline suitable for this recipe, e.g., diabetic, halal.",
+      "enum": [
+        "Vegetarian",
+        "Vegan",
+        "Pescatarian",
+        "Paleo",
+        "Ketogenic",
+        "Gluten-Free",
+        "Dairy-Free",
+        "Low-FODMAP",
+        "Nut-Free",
+        "Low-Sodium",
+        "Sugar-Free",
+        "Halal",
+        "Kosher",
+        "Plant-Based",
+        "Mediterranean"
+      ]
+    },
+    "cookTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "The cooking time in ISO 8601 duration format."
+    },
+    "recipeYield": {
+      "type": "integer",
+      "description": "The quantity produced by the recipe, e.g., number of servings."
+    },
+    "source": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "The source URL of the recipe."
+    },
+    "recipeImage": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "The URL of the recipe image."
+    },
+    "recipeIngredients": {
+      "type": "array",
+      "description": "A list of ingredients required for the recipe.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "raw": {
+            "type": "string",
+            "description": "The raw text of the ingredient."
+          },
+          "quantity": {
+            "type": ["string", "null"],
+            "description": "The quantity of the ingredient."
+          },
+          "unit": {
+            "type": ["string", "null"],
+            "description": "The unit of measure for the ingredient.",
+            "enum": [
+              "teaspoon",
+              "tablespoon",
+              "cup",
+              "milliliter",
+              "liter",
+              "fluid ounce",
+              "pint",
+              "quart",
+              "gallon",
+              "milligram",
+              "gram",
+              "kilogram",
+              "ounce",
+              "pound",
+              "inch",
+              "centimeter",
+              "slice",
+              "pinch",
+              "dash",
+              "clove",
+              "can",
+              "package",
+              "jar",
+              "bunch",
+              "sprig"
+            ]
+          },
+          "ingredient": {
+            "type": "string",
+            "description": "The type of ingredient. This will be a lookup to an ingredients table."
+          }
+        },
+        "required": ["raw", "quantity", "unit"]
+      }
+    },
+    "recipeInstructions": {
+      "type": "array",
+      "description": "A list of steps to prepare the recipe.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "raw": {
+            "type": "string",
+            "description": "The raw text of the step."
+          },
+          "sequence": {
+            "type": ["integer", "null"],
+            "description": "The order in which the step should be executed."
+          },
+          "instruction": {
+            "type": ["string", "null"],
+            "description": "Detailed instructions of the step."
+          }
+        }
+      }
+    },
+    "nutrition": {
+      "type": "object",
+      "description": "Nutritional information for the recipe.",
+      "properties": {
+        "calories": {
+          "type": ["integer", "null"],
+          "description": "The number of calories."
+        },
+        "carbohydrateContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of carbohydrates."
+        },
+        "cholesterolContent": {
+          "type": ["integer", "null"],
+          "description": "The number of milligrams of cholesterol."
+        },
+        "fatContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of fat."
+        },
+        "fiberContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of fiber."
+        },
+        "proteinContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of protein."
+        },
+        "saturatedFatContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of saturated fat."
+        },
+        "servingSize": {
+          "type": ["string", "null"],
+          "description": "The serving size, in terms of volume or mass."
+        },
+        "sodiumContent": {
+          "type": ["integer", "null"],
+          "description": "The number of milligrams of sodium."
+        },
+        "sugarContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of sugar."
+        },
+        "transFatContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of trans fat."
+        },
+        "unsaturatedFatContent": {
+          "type": ["integer", "null"],
+          "description": "The number of grams of unsaturated fat."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "name",
+    "prepTime",
+    "cookTime",
+    "recipeYield",
+    "recipeIngredients",
+    "recipeInstructions"
+  ]
+}
