@@ -1,0 +1,86 @@
+{
+  "title": "mealPrep",
+  "description": "A consolidation of recipes that brings together the ingredients and instructions from multiple recipes to prepare these items in bulk.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Provide the name of the recipe."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Include the names of the recipes being consolidated. Use this format: 'The following recipes have been consolidated: - recipe 1 - recipe 2'. Return the text in markdown."
+    },
+    "prepTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "Specify the total preparation time in ISO 8601 duration format. Estimate this based on the prep time of the individual recipes."
+    },
+    "cookTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "Specify the cooking time in ISO 8601 duration format. Estimate this based on the cook time of the individual recipes."
+    },
+    "recipeIngredients": {
+      "type": "array",
+      "description": "List all the ingredients required to prepare these recipes. For each ingredient, provide quantity, unit of measure, and type of ingredient. When ingredients are similar, make necessary updates so the unit of measure is the same, consolidate into a common ingredient, and state the total quantity required.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": ["string", "null"],
+            "description": "Specify the quantity of the ingredient. Where the ingredients are similar, update and display the total quantity."
+          },
+          "unit": {
+            "type": ["string", "null"],
+            "description": "Specify the unit of measure for the ingredient. Where ingredients are similar, update so that they use the same unit of measure.",
+            "enum": [
+              "teaspoon",
+              "tablespoon",
+              "cup",
+              "milliliter",
+              "liter",
+              "fluid ounce",
+              "pint",
+              "quart",
+              "gallon",
+              "milligram",
+              "gram",
+              "kilogram",
+              "ounce",
+              "pound",
+              "inch",
+              "centimeter",
+              "slice",
+              "pinch",
+              "dash",
+              "clove",
+              "can",
+              "package",
+              "jar",
+              "bunch",
+              "sprig"
+            ]
+          },
+          "ingredient": {
+            "type": "string",
+            "description": "Specify the type of ingredient. Where ingredients are similar, update so that the ingredient name is stated consistently."
+          }
+        },
+        "required": ["quantity", "unit", "ingredient"]
+      }
+    },
+    "recipeInstructions": {
+      "type": "string",
+      "description": "Specify consolidated steps to prepare all the individual recipes. Display instructions in three main sections: Preparation, Cook, Serve. These sections should use the heading #1 markup. In each section, make the instructions very concise, focusing on the quantity, unit and ingredient name, key action, and duration. Summarize the key action followed by the detail. Example: <Step summary> - <Step detail>. Bold the step and return the text in markdown. Where it makes sense: 1. reference the name of the recipe that the instruction is for. 2. Create sub-sections to make the instructions easier to follow, Sub sections, can use Heading #2 and #3 markup as required."
+    }
+  },
+  "required": [
+    "name",
+    "prepTime",
+    "cookTime",
+    "recipeIngredients",
+    "recipeInstructions"
+  ]
+}
