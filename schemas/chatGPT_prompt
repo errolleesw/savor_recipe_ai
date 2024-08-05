@@ -1,0 +1,102 @@
+The recipes below are provided in JSON format. I want you to:
+  1. Consolidate the ingredients and instructions from these recipes into a single set of ingredients and instructions. This consolidation of recipes is called a meal prep plan. 
+  2. Use the property descriptions in the provided JSON schema for guidance on how to populate each property.
+  3. Populate all fields in the JSON structure.
+  4. Provide the consolidated meal prep data in the JSON schema format.
+
+JSON Schema:
+{
+  "title": "mealPrep",
+  "description": "A consolidation of recipes that brings together the ingredients and instructions from multiple recipes to prepare these items in bulk.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Provide the name of the recipe."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Include the names of the recipes being consolidated. Use this format: 'The following recipes have been consolidated: - recipe 1 - recipe 2'. Return the text in markdown."
+    },
+    "prepTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "Specify the total preparation time in ISO 8601 duration format. Estimate this based on the prep time of the individual recipes."
+    },
+    "cookTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "Specify the cooking time in ISO 8601 duration format. Estimate this based on the cook time of the individual recipes."
+    },
+    "recipeIngredients": {
+      "type": "array",
+      "description": "List all the ingredients required to prepare these recipes. For each ingredient, provide quantity, unit of measure, and type of ingredient. When ingredients are similar, make necessary updates so the unit of measure is the same, consolidate into a common ingredient, and state the total quantity required.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": ["string", "null"],
+            "description": "Specify the quantity of the ingredient. Where the ingredients are similar, update and display the total quantity."
+          },
+          "unit": {
+            "type": ["string", "null"],
+            "description": "Specify the unit of measure for the ingredient. Where ingredients are similar, update so that they use the same unit of measure.",
+            "enum": [
+              "teaspoon",
+              "tablespoon",
+              "cup",
+              "milliliter",
+              "liter",
+              "fluid ounce",
+              "pint",
+              "quart",
+              "gallon",
+              "milligram",
+              "gram",
+              "kilogram",
+              "ounce",
+              "pound",
+              "inch",
+              "centimeter",
+              "slice",
+              "pinch",
+              "dash",
+              "clove",
+              "can",
+              "package",
+              "jar",
+              "bunch",
+              "sprig"
+            ]
+          },
+          "ingredient": {
+            "type": "string",
+            "description": "Specify the type of ingredient. Where ingredients are similar, update so that the ingredient name is stated consistently."
+          }
+        },
+        "required": ["quantity", "unit", "ingredient"]
+      }
+    },
+    "recipeInstructions": {
+      "type": "string",
+      "description": "Consolidate the instructions to prepare all the recipes. Re-order them in sequence that makes it as efficient as possible to prepare all the recipes, making sure to account for the preparation steps. For example, if some time in the oven is required, have those steps go first so that other preparation and cooking steps can be completed while the item is in the oven. The preparation steps for the items going into the oven should therefore also go first.Assume that there is only 1 oven to be used. Make sure to include instructions to let the cook know to perform steps while items are cooking in the oven. Create sections and sub-sections using heading #1 and #2 markups as required. In each section, make the instructions detailed, focusing on the quantity, unit and ingredient name, key action, and duration. Summarize the key action followed by the detail. Example: <Step summary> - <Step detail>. Bold the step and return the text in markdown. Where it makes sense, reference the name of the recipe that the instruction is for. "
+    }
+  },
+  "required": [
+    "name",
+    "prepTime",
+    "cookTime",
+    "recipeIngredients",
+    "recipeInstructions"
+  ]
+}
+ 
+
+Recipe 1:
+{'name': 'Japanese Fried Chicken', 'notes': 'Allowing the chicken to stand for 5 minutes before frying allows the flour to absorb the flavour of the marinade, and then dry slightly. This little resting time is the secret for producing crispy and flavourful kara-age. Having fillets with the skin on is very important for this dish. Skin-on fillets can be hard to find, so if you’re having trouble you can debone a few chicken thigh cutlets or use wings instead. Place a rack above half of your frying pot. It will help reduce mess when transferring the chicken in and out of the oil, and the radiated heat from the oil will continue to warm and cook the chicken. If you don’t have a rack placed above the oil, you may want to extend your cooking time by just 30 seconds or so to ensure the chicken is cooked through. You may notice that the chicken starts to spit and sizzle more on the third fry, this is because the chicken is cooked and is now contracting and squeezing out the juices from the meat (the watery juices contacting with the oil is what is causing it to spit). If this is happening, the chicken is done and you can remove it from the oil immediately.', 'prepTime': 'PT15M', 'tags': ['Main', 'Japanese'], 'recipeCuisine': ['Japanese'], 'suitableForDiet': ['Not based on any diet'], 'cookTime': 'PT3M', 'recipeYield': 4, 'source': 'http://adamliaw.com', 'recipeImage': None, 'recipeIngredients': [{'raw': '600 g chicken thighs, skin-on', 'quantity': '600', 'unit': 'gram', 'ingredient': 'chicken thighs'}, {'raw': '3 T light soy sauce', 'quantity': '3', 'unit': 'tablespoon', 'ingredient': 'light soy sauce'}, {'raw': '2 T sake', 'quantity': '2', 'unit': 'tablespoon', 'ingredient': 'sake'}, {'raw': '1 T grated ginger, juice only', 'quantity': '1', 'unit': 'tablespoon', 'ingredient': 'grated ginger'}, {'raw': '½ t sugar', 'quantity': '0.5', 'unit': 'teaspoon', 'ingredient': 'sugar'}, {'raw': '¾ c potato flour (or substitute cornflour)', 'quantity': '0.75', 'unit': 'cup', 'ingredient': 'potato flour'}, {'raw': 'about 2L canola, sunflower or other vegetable oil, for deep frying', 'quantity': '2', 'unit': 'liter', 'ingredient': 'vegetable oil'}, {'raw': 'Japanese mayonnaise, to serve', 'quantity': '', 'unit': '', 'ingredient': 'Japanese mayonnaise'}, {'raw': 'lemon slices, to serve', 'quantity': '', 'unit': '', 'ingredient': 'lemon slices'}, {'raw': 'shichimi togarashi (Japanese seven-spice), to serve (optional)', 'quantity': '', 'unit': '', 'ingredient': 'shichimi togarashi'}], 'recipeInstructions': [{'raw': 'Cut the chicken into 5cm pieces. Combine the chicken with the soy sauce, sake, ginger juice and sugar and stand for 10 minutes.', 'sequence': 1, 'instruction': '**Cut and marinate chicken** - Cut chicken into 5cm pieces and marinate with soy sauce, sake, ginger juice, and sugar for 10 minutes.'}, {'raw': 'Place the flour in a tray or large bowl. Pull the chicken out of the marinade with chopsticks and drop it into the flour, one piece at a time. Adding the pieces one at a time stops you from pouring in too much of the marinade, and stops the chicken from sticking together. Shake any excess flour from the chicken and place in a tray in a single layer. Allow the floured chicken to stand, uncovered for at least 5 minutes before frying.', 'sequence': 2, 'instruction': '**Coat and rest chicken** - Coat chicken in flour and let it rest for 5 minutes before frying.'}, {'raw': 'Heat the oil to 180°C in a wide saucepan. Add the chicken to the oil in batches. For each batch, deep fry for 1 minute then remove the chicken to a rack and rest for 30 seconds. Return the chicken back to the oil and fry for 30 seconds, and then rest on a rack again for 30 seconds. Transfer the chicken back into the oil for one last blast of 30 seconds to a minute, and then rest for a two minutes on a wire rack.', 'sequence': 3, 'instruction': '**Deep fry chicken** - Heat oil to 180°C and fry chicken in batches: fry for 1 minute, rest for 30 seconds, fry for 30 seconds, rest for 30 seconds, and finally fry for 30 seconds to 1 minute.'}, {'raw': 'Serve the chicken with a lemon wedge, and a little Japanese mayonnaise scattered with shichimi togarashi (if using).', 'sequence': 4, 'instruction': '**Serve** - Serve chicken with lemon wedge and Japanese mayonnaise.'}], 'nutrition': {}}
+Recipe 2:
+{'name': 'Slow-Roasted Crispy Pork Belly', 'notes': '', 'prepTime': 'PT5M', 'tags': ['main', 'pork', 'roasted'], 'recipeCuisine': ['Other'], 'suitableForDiet': ['Not based on any diet'], 'cookTime': 'PT3H', 'recipeYield': 4, 'source': 'https://recipetineats.com', 'recipeImage': None, 'recipeIngredients': [{'raw': '1000 g pork belly with skin on, not scored, 3 – 3.5cm thick, even thickness with flat, unwrinkled skin, preferably not vac-packed', 'quantity': '1000', 'unit': 'gram', 'ingredient': 'pork belly'}, {'raw': '1 1/2 t olive oil, divided', 'quantity': '1.5', 'unit': 'tablespoon', 'ingredient': 'olive oil'}, {'raw': '1/2 t fennel powder (Optional)', 'quantity': '0.5', 'unit': 'teaspoon', 'ingredient': 'fennel powder'}, {'raw': '1 t kosher salt (or 7/8 t table salt), divided', 'quantity': '1', 'unit': 'teaspoon', 'ingredient': 'kosher salt'}, {'raw': '1/4 t black pepper', 'quantity': '0.25', 'unit': 'teaspoon', 'ingredient': 'black pepper'}], 'recipeInstructions': [{'raw': 'Dry skin overnight - Place pork belly on a plate, pat skin dry with paper towels, and leave uncovered in the fridge overnight to dry out the skin. (If short on time, pat skin dry thoroughly).', 'sequence': 1, 'instruction': '**Dry skin overnight** - Pat skin dry and leave uncovered in the fridge overnight.'}, {'raw': 'Preheat oven - Set oven to 140°C/285°F (120°C fan).', 'sequence': 2, 'instruction': '**Preheat oven** - Set oven to 140°C/285°F.'}, {'raw': 'Season flesh - Drizzle flesh with 1 tsp oil, sprinkle with 1/2 tsp salt, pepper, and fennel powder. Rub thoroughly, including sides and crevices.', 'sequence': 3, 'instruction': '**Season flesh** - Drizzle flesh with oil, sprinkle with salt, pepper, and fennel powder.'}, {'raw': 'Wrap in foil - Place 2 pieces of foil on a work surface. Position belly in the middle, skin side up. Fold sides to form an open box, seal tightly. Place on a tray.', 'sequence': 4, 'instruction': '**Wrap in foil** - Seal pork belly in foil.'}, {'raw': 'Season skin - Pat skin dry with paper towels. Rub with 1/2 tsp oil and sprinkle 1/2 tsp salt evenly over the skin.', 'sequence': 5, 'instruction': '**Season skin** - Pat skin dry, rub with oil and sprinkle salt.'}, {'raw': 'Slow roast 2 1/2 hours - Roast in the oven for 2 1/2 hours. After 1 1/2 hours, remove, tighten foil, and continue roasting.', 'sequence': 6, 'instruction': '**Slow roast 2 1/2 hours** - Roast for 2 1/2 hours.'}, {'raw': 'Increase heat - Remove pork from oven, increase heat to 240°C/465°F (all oven types).', 'sequence': 7, 'instruction': '**Increase heat** - Increase oven temperature to 240°C/465°F.'}, {'raw': 'Level pork - Remove pork from foil, place on a rack over a tray. Use foil balls to level skin surface.', 'sequence': 8, 'instruction': '**Level pork** - Place pork on a rack over a tray.'}, {'raw': '30 minutes on high heat - Roast for 30 minutes, rotating after 15 minutes as needed until the crackling is golden, puffy, and crispy. Use foil patches to protect browning patches.', 'sequence': 9, 'instruction': '**30 minutes on high heat** - Roast for 30 minutes until crispy.'}, {'raw': 'Rest 10 minutes - Remove pork from oven, rest for 10 minutes before slicing.', 'sequence': 10, 'instruction': '**Rest 10 minutes** - Let pork rest before slicing.'}, {'raw': 'Serving - Slice into 2cm / ⅘"-thick slices with a serrated knife. Serve with Apple Sauce, Vermouth Jus, and Cauliflower Puree (Note 2). See post for plating directions and sauce options.', 'sequence': 11, 'instruction': '**Serve** - Slice and serve with sauces.'}], 'nutrition': {'calories': 1313, 'carbohydrateContent': 1, 'cholesterolContent': 180, 'fatContent': 135, 'fiberContent': 1, 'proteinContent': 23, 'saturatedFatContent': 49, 'sodiumContent': 661}}
+Recipe 3:
+{'name': 'Yotam Ottolenghi’s Cauliflower Salad', 'notes': '', 'prepTime': 'PT10M', 'tags': ['salad', 'vegetarian', 'side'], 'recipeCuisine': ['Mediterranean'], 'suitableForDiet': ['Vegetarian'], 'cookTime': 'PT30M', 'recipeYield': 5, 'source': 'https://recipetineats.com', 'recipeImage': '', 'recipeIngredients': [{'raw': '1 large cauliflower or 2 small, cut into florets', 'quantity': '650', 'unit': 'gram', 'ingredient': 'cauliflower'}, {'raw': '2 T olive oil', 'quantity': '2', 'unit': 'tablespoon', 'ingredient': 'olive oil'}, {'raw': '1/2 t salt', 'quantity': '0.5', 'unit': 'teaspoon', 'ingredient': 'salt'}, {'raw': '1/2 t pepper', 'quantity': '0.5', 'unit': 'teaspoon', 'ingredient': 'pepper'}, {'raw': '1 celery stalk, sliced', 'quantity': '1', 'unit': 'slice', 'ingredient': 'celery'}, {'raw': '1/3 c hazelnuts, raw', 'quantity': '1/3', 'unit': 'cup', 'ingredient': 'hazelnuts'}, {'raw': '1/2 pomegranate, seeds (1/3 c)', 'quantity': '1/3', 'unit': 'cup', 'ingredient': 'pomegranate seeds'}, {'raw': '1 c parsley leaves, lightly packed', 'quantity': '1', 'unit': 'cup', 'ingredient': 'parsley leaves'}, {'raw': '2 T olive oil', 'quantity': '2', 'unit': 'tablespoon', 'ingredient': 'olive oil'}, {'raw': '1/3 t cinnamon powder', 'quantity': '0.33', 'unit': 'teaspoon', 'ingredient': 'cinnamon powder'}, {'raw': '1/3 t allspice', 'quantity': '0.33', 'unit': 'teaspoon', 'ingredient': 'allspice'}, {'raw': '1 T sherry vinegar', 'quantity': '1', 'unit': 'tablespoon', 'ingredient': 'sherry vinegar'}, {'raw': '1 1/2 t maple syrup (or honey or golden syrup)', 'quantity': '1.5', 'unit': 'teaspoon', 'ingredient': 'maple syrup'}, {'raw': '1/4 t salt', 'quantity': '0.25', 'unit': 'teaspoon', 'ingredient': 'salt'}, {'raw': '1/4 t pepper', 'quantity': '0.25', 'unit': 'teaspoon', 'ingredient': 'pepper'}], 'recipeInstructions': [{'raw': 'Preheat to 220°C/425°F (200°C fan).', 'sequence': 1, 'instruction': '**Preheat oven** - Preheat to 220°C/425°F (200°C fan).'}, {'raw': 'Toss cauliflower with oil, salt, and pepper. Spread on tray, roast 20 minutes, turn, then roast for 5-10 more minutes until golden brown and cooked through. Cool for 20 minutes.', 'sequence': 2, 'instruction': '**Roast cauliflower** - Toss cauliflower with oil, salt, and pepper; roast for 25-30 minutes. Cool for 20 minutes.'}, {'raw': 'Turn oven down to 160°C/320°F (140°C fan). Spread hazelnuts on tray, roast for 5 minutes until fragrant. Cool slightly, then roughly chop.', 'sequence': 3, 'instruction': '**Toast hazelnuts** - Roast hazelnuts for 5 minutes at 160°C/320°F (140°C fan). Cool slightly and chop.'}, {'raw': 'Combine hazelnuts, parsley, and celery in a bowl. Sprinkle with cinnamon, allspice, salt, and pepper. Drizzle with olive oil, maple syrup, and vinegar. Toss gently.', 'sequence': 4, 'instruction': '**Prepare salad** - Combine hazelnuts, parsley, and celery; drizzle with olive oil, maple syrup, and vinegar.'}, {'raw': 'Taste, adjust salt and pepper if needed. Transfer to serving bowl, scatter pomegranates. Serve at room temperature.', 'sequence': 5, 'instruction': '**Plate up** - Adjust seasoning; serve salad at room temperature.'}], 'nutrition': {'calories': 178, 'carbohydrateContent': 9, 'cholesterolContent': None, 'fatContent': 15, 'fiberContent': 3, 'proteinContent': 4, 'saturatedFatContent': 2, 'servingSize': '', 'sodiumContent': 393, 'sugarContent': 4, 'transFatContent': None, 'unsaturatedFatContent': None}}
+    

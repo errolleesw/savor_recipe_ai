@@ -38,3 +38,38 @@ Existing prompt:
     2.	Recipe1
     3.	my-file_name123
     4.	example_string-456
+
+## Hyper Recipe Thoughts
+Why are recipes still so flat. Still just a replica of printed recipes? Why can't they be more interactive and better formatted to help you cook more efficiently.
+
+Structured schemas for recipes already exist:
+- [Recipe Schema Markup (Structured Data) Json-ld generator | Honey & Jam](https://honeynjam.com/tools/schema-markup-generators/recipe)
+- [Recipe - Schema.org Type](https://schema.org/Recipe)
+- [Recipe Schema Markup | Google Search Central  |  Documentation  |  Google for Developers](https://developers.google.com/search/docs/appearance/structured-data/recipe)
+
+But they're missing a few things.
+
+Things that can be improved.
+- Ingredients are stored as text in an array, which means, they can't have their own properties. We should be able to split up ingredients into quantity, unit and item. We should also be group up similar ingredients by category.
+- Ingredients shoudl be standardised against the raw item that is available, either in the pantry or fridge, but more typically, what can be purchased at the local grocery store.
+  - There should be no "processing" / "preparation" steps in the ingreidents. E.g. it shouldn't say roughly chopped parsely, it should just say Parsely, the chopping should be included in the steps.
+- Nice to have: It should also easily suggest alternatives if the item is not available.
+- There should be standardised short-hands for quantity measurements.
+  
+- Recipe steps should include the preparation of the ingredients and be organised as efficiently as possible, e.g. if an item needs to go in the oven or simmer for a while, prep that first and prep other items while that is cooking.
+- Steps should include quantities of the ingredients.
+- Steps should visiually indicate the difference between ingredients, duration, equipment.
+
+Some ideas:
+- Use [HowToItem - Schema.org Type](https://schema.org/HowToItem) schema as a baseline for ingredients.
+- Use [HowToTool - Schema.org Type](https://schema.org/HowToTool) schema as a baseline for equipment.
+- Use [HowToSection - Schema.org Type](https://schema.org/HowToSection) schema to group ingredients and equipment.
+
+### Recipe Metadata
+- Name
+- prepTime
+- tags
+- 
+
+### Ingredients
+  

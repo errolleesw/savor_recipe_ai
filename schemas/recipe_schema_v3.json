@@ -1,14 +1,41 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "recipe",
-  "description": "recipe details",
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "A schema that validates the minimum requirements for a recipe. This builds on the structured recipe data defined by google and schema.org.",
   "type": "object",
   "properties": {
     "name": {
       "type": "string",
       "description": "Provide the name of the recipe."
     },
-    "notes": {
+    "recipeImage": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Provide the URL of the recipe image, if available."
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Include any additional notes for the recipe."
+    },
+    "keywords": {
+      "type": "string",
+      "description": "List keywords associated with the recipe, separated by commas."
+    },
+    "author": {
+      "type": "object",
+      "description": "The name of the recipe author",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Person"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the recipe author"
+        }
+      }
+    },
+    "c_notes": {
       "type": ["string", "null"],
       "description": "Include any additional notes for the recipe."
     },
@@ -22,12 +49,14 @@
       "format": "duration",
       "description": "Specify the cooking time in ISO 8601 duration format."
     },
-    "tags": {
-      "type": ["array", "null"],
-      "description": "List tags associated with the recipe, such as type of recipe (e.g., breakfast, entree, main, side) or other descriptive tags to make it easier to find the recipe.",
-      "items": {
-        "type": "string"
-      }
+    "totalTime": {
+      "type": "string",
+      "format": "duration",
+      "description": "Specify the cooking time in ISO 8601 duration format."
+    },
+    "recipeYield": {
+      "type": "integer",
+      "description": "Indicate the number of servings produced by the recipe."
     },
     "recipeCuisine": {
       "type": ["array", "null"],
@@ -89,71 +118,94 @@
         ]
       }
     },
-    "recipeYield": {
-      "type": "integer",
-      "description": "Indicate the number of servings produced by the recipe."
-    },
     "source": {
       "type": ["string", "null"],
       "format": "uri",
       "description": "Provide the source URL of the recipe, if available."
     },
-    "recipeImage": {
-      "type": ["string", "null"],
-      "format": "uri",
-      "description": "Provide the URL of the recipe image, if available."
-    },
     "recipeIngredients": {
       "type": "array",
       "description": "List the ingredients required for the recipe. For each ingredient, provide the raw text, quantity, unit of measure, and type of ingredient.",
       "items": {
+        "type": "string"
+      }
+    },
+    "c_supply": {
+      "type": "array",
+      "items": {
         "type": "object",
         "properties": {
-          "raw": {
+          "@type": {
             "type": "string",
-            "description": "Provide the raw text of the ingredient."
+            "const": "HowToSection"
           },
-          "quantity": {
-            "type": ["string", "null"],
-            "description": "Specify the quantity of the ingredient."
-          },
-          "unit": {
-            "type": ["string", "null"],
-            "description": "Specify the unit of measure for the ingredient.",
-            "enum": [
-              "teaspoon",
-              "tablespoon",
-              "cup",
-              "milliliter",
-              "liter",
-              "fluid ounce",
-              "pint",
-              "quart",
-              "gallon",
-              "milligram",
-              "gram",
-              "kilogram",
-              "ounce",
-              "pound",
-              "inch",
-              "centimeter",
-              "slice",
-              "pinch",
-              "dash",
-              "clove",
-              "can",
-              "package",
-              "jar",
-              "bunch",
-              "sprig"
-            ]
-          },
-          "ingredient": {
+          "name": {
             "type": "string",
-            "description": "Specify the type of ingredient."
+            "description": "Name of the ingredient category."
+          },
+          "c_order": {
+            "type": "integer",
+            "description": "The order the section will appear."
+          },
+          "itemListElement": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "type": "string",
+                  "const": "HowToSupply"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the supply"
+                },
+                "quantity": {
+                  "type": "string",
+                  "description": "Quantity of the supply"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit of measure for the quantity",
+                  "enum": [
+                    "tablespoon",
+                    "count",
+                    "teaspoon",
+                    "cup",
+                    "milliliter",
+                    "liter",
+                    "fluid ounce",
+                    "pint",
+                    "quart",
+                    "gallon",
+                    "milligram",
+                    "gram",
+                    "kilogram",
+                    "ounce",
+                    "pound",
+                    "inch",
+                    "centimeter",
+                    "slice",
+                    "pinch",
+                    "dash",
+                    "clove",
+                    "can",
+                    "package",
+                    "jar",
+                    "bunch",
+                    "sprig"
+                  ]
+                },
+                "ingredient": {
+                  "type": "string",
+                  "description": "Ingredient name"
+                }
+              },
+              "required": ["@type", "name", "quantity", "unit", "ingredient"]
+            }
           }
         },
-        "required": ["raw", "quantity", "unit", "ingredient"]
+        "required": ["@type", "name", "itemListElement"]
       }
     },
     "recipeInstructions": {
@@ -162,19 +214,45 @@
       "items": {
         "type": "object",
         "properties": {
-          "raw": {
+          "@type": {
             "type": "string",
-            "description": "Provide the raw text of the step."
+            "const": "HowToSection"
           },
-          "sequence": {
-            "type": ["integer", "null"],
-            "description": "Specify the order in which the step should be executed."
+          "name": {
+            "type": "string",
+            "description": "Name of the instruction section"
           },
-          "instruction": {
-            "type": ["string", "null"],
-            "description": "Provide a more concise version of the raw text. Make it very concise, focusing on the ingredient, key action, and duration. Summarize the key action followed by the detail. Example: <Step summary> - <Step detail>. Bold the step summary and return the text in markdown."
+          "c_order": {
+            "type": "integer",
+            "description": "The order the section will appear."
+          },
+          "itemListElement": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "type": "string",
+                  "const": "HowToStep"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "Detailed instruction text"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Instruction summary"
+                },
+                "c_order": {
+                  "type": "integer",
+                  "description": "The order the instructions will appear in the section."
+                }
+              },
+              "required": ["@type", "text", "name", "c_order"]
+            }
           }
-        }
+        },
+        "required": ["@type", "name", "itemListElement", "c_order"]
       }
     },
     "nutrition": {
